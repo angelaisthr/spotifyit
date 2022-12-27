@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home | Spotifyly
+{% endblock %}
+
+{% block main %}
+<h1 class="titles">Your Profile</h1>
+<img id="img" class="pad" src="{{ image }}" alt="profile image" style="float:right;" class="rounded">
+<div class="pad" id="table">
+<table class="pad align-baseline table-bordered table-dark">
+    <tr>
+    <th scope="col">  Country </th>
+        <th scope="row">{{ country }}</th>
+    </tr>
+    <th scope="col">  Name  </th>
+        <th scope="row">  {{ username }}  </th>
+    <tr>
+    <th scope="col">  Profile Link   </th>
+        <th scope="row"><a href="{{ profile }}">Link</a></th>
+    </tr>
+    <tr>
+    <th scope="col">Id </th>
+        <th scope="row">  {{ id }}  </th>
+    </tr>
+    </table>
+</div>
+<br>
+<br>
+<br>
+<div>
+    <h1 class="titles" >Start Converting</h1>
+    <form action="/convert" method="post">
+    <button class="btn text-light" style="font-size:20px; background-color: #1DB954;" type="submit"> Let's Go!</button>
+    </form>
+    <p>( this might take a while depending on the size of the liked songs! )</p>
+
+</div>
+{% endblock %}

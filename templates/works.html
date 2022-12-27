@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Convert | Spotifyly
+{% endblock %}
+
+{% block main %}
+
+    Playlist Created!
+    <br>
+    Playlists:
+    <br>
+    {% for playlist in playlistitems %}
+        <p>{{ playlist['name'] }}</p>
+        <a href="{{ url }}">link</a>
+        <br>
+
+    {% endfor %}
+    <br>
+    Check if it showed up in your account!
+    <br>
+    if not, try going back step by step!
+{% endblock %}
