@@ -1,0 +1,29 @@
+body {
+    font-family:Bebas Neue;
+    font-size: 2vw;
+    color:white;
+    background: dark;
+    text-align: center;
+    
+}
+
+#img {
+    display: flex;
+    left: 15%;
+}
+
+#table {
+    display: flex;
+    right: 20%;
+}
+.head {
+    font-size: 2.4vw;
+}
+
+.pad {
+    padding: 5px 10vw;
+}
+
+.titles {
+    font-size:4vw;
+}
