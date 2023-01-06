@@ -35,7 +35,6 @@ def login():
     scope = scope + scopes
     redirect_uri = url_for('login', _external=True)
     print(redirect_uri)
-    print("HI PLEASE :(")
     token = util.prompt_for_user_token(
                                         scope,
                                         client_id=client_id,
