@@ -2,4 +2,7 @@ python-dotenv==0.21.0
 requests==2.28.1
 spotify==0.10.2
 spotipy==2.22.0
+<<<<<<< HEAD
 gunicorn==20.1.0
+=======
+>>>>>>> 160e426b409fddb27581ec965034e89745e00cd3
