@@ -4,85 +4,78 @@ Backend for website
 import os
 import datetime
 from dotenv import load_dotenv
-from flask import redirect,Flask, render_template, request, url_for
-import spotipy.util as util
+from flask import redirect,Flask, render_template, request
 import spotipy
+from spotipy import oauth2
 
 load_dotenv()
 
-
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    """
-    Returns homepage
-    """
-    return render_template("index.html")
 
+SPOTIPY_CLIENT_ID = client_id = os.environ.get('client_id')
+SPOTIPY_CLIENT_SECRET = client_secret = os.environ.get('client_secret')
+SCOPE = "user-library-read playlist-read-private playlist-modify-private playlist-modify-public user-library-modify user-read-email user-read-private"
+SPOTIPY_REDIRECT_URI = "https://angelaisthr-crispy-barnacle-rqv566r9wrx3pp6q-5000.preview.app.github.dev/login"
+
+sp_oauth = oauth2.SpotifyOAuth( SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET,SPOTIPY_REDIRECT_URI,scope=SCOPE)
+
+@app.route("/", methods=["GET"])
+def home():
+    """
+    Homepage
+    """
+    auth_url = sp_oauth.get_authorize_url()
+    return render_template("index.html", url=auth_url)
 
 @app.route("/login", methods=["GET", "POST"])
-def login():
+def verify():
     """
     Logs the user in
     """
-    if request.method == "GET":
-        return render_template("redirect.html")
-    client_id = os.environ.get('client_id')
-    client_secret = os.environ.get('client_secret')
-    scope = "user-library-read+playlist-read-private+playlist-modify-private+"
-    scopes = "playlist-modify-public+user-library-modify+user-read-email+user-read-private"
-    scope = scope + scopes
-    redirect_uri = url_for('login', _external=True)
-    print(redirect_uri)
-    print("HI PLEASE :(")
-    token = util.prompt_for_user_token(
-                                        scope,
-                                        client_id=client_id,
-                                        client_secret=client_secret,
-                                        redirect_uri=redirect_uri)
-    spotify_object = spotipy.Spotify(auth=token)
-    username = spotify_object.current_user()
-    if username is None:
-        return redirect("/")
-    country = username["country"]
-    username = username["display_name"]
-    user_id = username["id"]
-    profile = "https://open.spotify.com/user/" + id
-    image = username["images"]
-    image = image[0]
+    code = request.args.get('code')
+    print(code)
+    if code:
+        print ("Found Spotify auth code in Request URL! Trying to get valid access token...")
+        token_info = sp_oauth.get_access_token(code)
+        access_token = token_info['access_token']
+    if access_token:
+        print ("Access token available! Trying to get user information...")
+        class b():
+            global spotify_object
+            spotify_object = spotipy.Spotify(access_token)
 
+    print(spotify_object)
+    user_name = spotify_object.current_user()
+    if user_name is None:
+        return redirect("/")
+    country = user_name["country"]
+    username = user_name["display_name"]
+    user_id = user_name["id"]
+    profile = "https://open.spotify.com/user/" + user_id
+    image = user_name["images"]
+    image = image[0]
     image = image["url"]
-    return render_template(
-                        'home.html',
-                        country=country,
-                        username=username,
-                        profile=profile,
-                        id=user_id,
-                        image=image)
+    return render_template('home.html', country=country, username=username, profile=profile, id=user_id, image=image)
+
+
+@app.route("/terms", methods=["GET"])
+def terms():
+    """
+    Returns terms
+    """
+    return render_template("terms.html")
+
 @app.route("/convert", methods=["GET", "POST"])
 def convert():
     """
     Gets liked songs and puts it into a playlist
     """
-    if request.method == "GET":
-        return render_template("redirect.html")
-    client_id = os.environ.get('client_id')
-    client_secret = os.environ.get('client_secret')
-    scope = "user-library-read+playlist-read-private+playlist-modify-private+"
-    scopes="playlist-modify-public+user-library-modify+user-read-email+user-read-private"
-    scope = scope + scopes
-    redirect_uri = url_for('login', _external=True)
-    token = util.prompt_for_user_token(
-                                    scope,
-                                    client_id=client_id,
-                                    client_secret=client_secret,
-                                    redirect_uri=redirect_uri)
-    spotify_object = spotipy.Spotify(auth=token)
-
+    user_name = spotify_object.current_user()
+    user_id = user_name["id"]
     current_date =  datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    spotify_object.user_playlist_create(id, current_date)
-    playlists = spotify_object.user_playlists(id)
+    spotify_object.user_playlist_create(user_id, current_date)
+    playlists = spotify_object.user_playlists(user_id)
     for playlist in playlists['items']:
         if playlist['name'] == current_date:
             playlist_id = playlist['id']
@@ -102,18 +95,6 @@ def show_tracks(results, playlist):
     """
     Logic for getting liked songs
     """
-    client_id = os.environ.get('client_id')
-    client_secret = os.environ.get('client_secret')
-    scope = "user-library-read+playlist-read-private+playlist-modify-private+"
-    scopes = "playlist-modify-public+user-library-modify+user-read-email+user-read-private"
-    scope = scope + scopes
-    redirect_uri = url_for('login', _external=True)
-    token = util.prompt_for_user_token(
-                                    scope,
-                                    client_id=client_id,
-                                    client_secret=client_secret,
-                                    redirect_uri=redirect_uri)
-    spotify_object = spotipy.Spotify(auth=token)
 
     for item in results['items']:
         track = item['track']
@@ -129,3 +110,6 @@ def show_tracks(results, playlist):
 
 
 # FROM https://github.com/spotipy-dev/spotipy/blob/master/examples/show_my_saved_tracks.py
+
+if __name__ == "__main__":
+    app.run()

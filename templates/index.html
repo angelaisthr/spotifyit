@@ -1,15 +1,13 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Login | Spotifyly
+    Login | Turnstrat
 {% endblock %}
 
 
 {% block main %}
         <h1>Turn your Spotify Liked playlist into a public (shareable) playlists!</h1>
         <h3>Log in with Spotify to get started</h3>
-         <form action="/login" method="post">
-          <button class="btn text-light" style="font-size:20px; background-color: #1DB954;" type="submit"><img src="/static/spotifyw.png" alt="Spotify Logo" width="30">    LOG IN WITH SPOTIFY</button>
-        </form>
+          <a href={{url}} class="btn text-light" style="font-size:20px; background-color: #1DB954;" type="submit"><img src="/static/spotifyw.png" alt="Spotify Logo" width="30">    LOG IN WITH SPOTIFY</a>
 
 {% endblock %}
