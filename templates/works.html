@@ -11,8 +11,8 @@
     Playlists:
     <br>
     {% for playlist in playlistitems %}
-        <p>{{ playlist['name'] }}</p>
-        <a href="{{ url }}">link</a>
+        <p><img scr="{{ img }}" alt="playlist cover" >{{ playlist['name'] }}</p>
+        <a href="{{ url }}">Open On Spotify</a>
         <br>
 
     {% endfor %}
