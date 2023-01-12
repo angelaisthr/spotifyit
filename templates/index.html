@@ -1,13 +1,41 @@
-{% extends "layout.html" %}
+<!doctype html>
+<html>
+  <head>
+    <title>Login | Turnstrat</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Bebas Neue' rel='stylesheet'>
+    <link href="/static/styles.css" rel="stylesheet">
+    <link rel="icon" href="/static/logo.png" type="image/icon type">
+  </head>
 
-{% block title %}
-    Login | Turnstrat
-{% endblock %}
+  <script>
+    document.onreadystatechange = function() {
+          if (document.readyState !== "complete") {
+              document.querySelector(
+                "body").style.visibility = "hidden";
+              document.querySelector(
+                "#spinner").style.visibility = "visible";
+          } else {
+              document.querySelector(
+                "#spinner").style.display = "none";
+              document.querySelector(
+                "body").style.visibility = "visible";
+          }
+      };
+  </script>
+  <div class='overlay' id="spinner"></div>
+  <body class="align-middle text-center text-light bg-dark">
+    <nav style="font-size:2.3vw" class="nav flex-column flex-sm-row">
+        <a class="align-baseline nav-link text-light head" href="/"><img src="/static/logo.png" alt="Turnstrat" height="40vw">Turnstrat</a>
+        <a class="align-baseline nav-link text-light head" href="/terms">Terms & Conditions</a>
+      </nav>
 
+    
+      <h1>Turn your Spotify Liked playlist into a public (shareable) playlists!</h1>
+      <h3>Log in with Spotify to get started</h3>
+        <a href={{url}} class="btn text-light" style="font-size:20px; background-color: #1DB954;" type="submit"><img src="/static/spotifyw.png" alt="Spotify Logo" width="30">    LOG IN WITH SPOTIFY</a>
 
-{% block main %}
-        <h1>Turn your Spotify Liked playlist into a public (shareable) playlists!</h1>
-        <h3>Log in with Spotify to get started</h3>
-          <a href={{url}} class="btn text-light" style="font-size:20px; background-color: #1DB954;" type="submit"><img src="/static/spotifyw.png" alt="Spotify Logo" width="30">    LOG IN WITH SPOTIFY</a>
-
-{% endblock %}
+  </body>
+</html>

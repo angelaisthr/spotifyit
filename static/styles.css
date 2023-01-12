@@ -4,8 +4,22 @@ body {
     color:white;
     background: dark;
     text-align: center;
-    
 }
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000;
+    opacity: 0.6;
+    background: black image(/static/duck.gif) url(http://1.bp.blogspot.com/_xn2gmPb9TfM/SBZwjqwS6MI/AAAAAAAABZw/uMVQlcxlosA/s400/loading-icon.gif) no-repeat center center;
+}
+
+div {
+    float: left;
+    padding: 15px; 
+  }
 
 #img {
     display: flex;

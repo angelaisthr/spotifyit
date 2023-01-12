@@ -1,12 +1,10 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Convert | Turnstrat
+    Playlists | Turnstrat
 {% endblock %}
 
 {% block main %}
-
-    Playlist Created!
     Playlists:
 <br>
     {% for thing in stuff%}
@@ -17,15 +15,11 @@
                         {{ thing['name'] }}</p>
                         <a href="{{ thing['url'] }}">Open On Spotify</a>
                     <p style="text-align:center;">
-                    <p>:( what about us</p>
-                    <p>Playlist &bull;</p>
                      <img class="d-block mx-auto img-fluid ms-1" src="static/spotifylogo.png" alt="Spotify logo" width="70">
                     </p>
                 </p>
             <br>
         </div>
     {% endfor %}
-<form action="/playlists" method="post">
-    <button class="btn text-light" style="font-size:20px;" type="submit">Duck?</button>
-</form>
+
 {% endblock %}
