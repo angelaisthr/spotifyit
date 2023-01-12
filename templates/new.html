@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Created | Turnstrat
+{% endblock %}
+
+{% block main %}
+    Created Playlist!
+<br>
+    {% for thing in stuff%}
+        <div style="align-middle text-align: center; padding-left: 10%;">
+                <img src="{{ thing['img'] }}" width="125px" height="125px">
+                <p class="mb-0">
+                    <p>
+                        {{ thing['name'] }}</p>
+                        <a href="{{ thing['url'] }}">Open On Spotify</a>
+                    <p style="text-align:center;">
+                     <img class="d-block mx-auto img-fluid ms-1" src="static/spotifylogo.png" alt="Spotify logo" width="70">
+                    </p>
+                </p>
+            <br>
+        </div>
+    {% endfor %}
+
+    <div>
+        <h1 class="titles">Click here to see all your playlists:</h1>
+        <form action="/playlists" method="get">
+            <button class="btn text-light" style="font-size:20px; background-color: #1DB954" type="submit">Your playlists</button>
+        </form>
+    </div>
+{% endblock %}

@@ -38,15 +38,20 @@ def verify():
     if code:
         print ("Found Spotify auth code in Request URL! Trying to get valid access token...")
         try:
-            token_info = sp_oauth.get_cached_token()
-            print("\nCached", token_info)
-            print("\n\n")
-            access_token = token_info['access_token']
-        except:
             token_info = sp_oauth.get_access_token(code)
             print("NEW",token_info)
             print("\n\n")
             access_token = token_info['access_token']
+        except:
+            token_info = sp_oauth.get_cached_token()
+            print("\nCached", token_info)
+            print("\n\n")
+            access_token = token_info['access_token']
+        #except :
+        #    token_info = sp_oauth.get_access_token(code)
+        #    print("NEW",token_info)
+        #    print("\n\n")
+        #    access_token = token_info['access_token']
     if access_token:
         print ("Access token available! Trying to get user information...")
         class b():
@@ -78,32 +83,33 @@ def convert():
     """
     Gets liked songs and puts it into a playlist
     """
-    images = []
-    url = []
+    stuff = []
     user_name = spotify_object.current_user()
     user_id = user_name["id"]
     current_date =  datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     spotify_object.user_playlist_create(user_id, current_date)
     playlists = spotify_object.user_playlists(user_id)
+    print("Created Playlist...")
     for playlist in playlists['items']:
         if playlist['name'] == current_date:
-            playlist_id = playlist['id']
             print(playlist['id'])
-            url.append("https://open.spotify.com/playlist/" + playlist['id'])
             img = spotify_object.playlist_cover_image(playlist['id'])
-            print("IMAGE: ",img)
-            print("\n\n")
-            img = img[0]
-            images.append(img['url'])
+            if img == []:
+                img = "/static/default.png"
+            else:
+                img = img[0]
+                img = img['url']
+            temp = {'url': "https://open.spotify.com/playlist/" + playlist['id'], 'name': playlist['name'], 'img': img}
+            stuff.append(temp)
             print("Loading...")
             results = spotify_object.current_user_saved_tracks()
-            show_tracks(results, playlist_id)
-
+            show_tracks(results, playlist['id'])
+    
             while results['next']:
                 print("Please wait ...")
                 results = spotify_object.next(results)
-                show_tracks(results, playlist_id)
-    return render_template("works.html", playlistitems=playlists['items'], urls=url, images=images)
+                show_tracks(results, playlist['id'])
+    return render_template("new.html", stuff=stuff)
 
 def show_tracks(results, playlist_name):
     """
