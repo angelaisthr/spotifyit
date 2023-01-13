@@ -37,21 +37,16 @@ def verify():
     code = request.args.get('code')
     if code:
         print ("Found Spotify auth code in Request URL! Trying to get valid access token...")
-        try:
-            token_info = sp_oauth.get_access_token(code)
-            print("NEW",token_info)
-            print("\n\n")
-            access_token = token_info['access_token']
-        except:
-            token_info = sp_oauth.get_cached_token()
-            print("\nCached", token_info)
-            print("\n\n")
-            access_token = token_info['access_token']
-        #except :
-        #    token_info = sp_oauth.get_access_token(code)
-        #    print("NEW",token_info)
-        #    print("\n\n")
-        #    access_token = token_info['access_token']
+        access_token = sp_oauth.get_access_token(code, as_dict=False, check_cache=False)
+        print("\n")
+        print("NEW", access_token)
+        print("\n")
+        # There shouldn't be a deprecation warning
+        # except DeprecationWarning:
+        #     token_info = sp_oauth.get_cached_token()
+        #     print("\nCached", token_info)
+        #     print("\n\n")
+        #     access_token = token_info['access_token']
     if access_token:
         print ("Access token available! Trying to get user information...")
         class b():
@@ -61,13 +56,20 @@ def verify():
     user_name = spotify_object.current_user()
     if user_name is None:
         return redirect("/")
+    print("CURRENT USER:")
+    print(user_name)
+    print("\n\n")
     country = user_name["country"]
     username = user_name["display_name"]
     user_id = user_name["id"]
     profile = "https://open.spotify.com/user/" + user_id
     image = user_name["images"]
-    image = image[0]
-    image = image["url"]
+    print(image)
+    if image == []:
+        image = "/static/duck.gif"
+    else:
+        image = image[0]
+        image = image["url"]
     return render_template('home.html', country=country, username=username, profile=profile, id=user_id, image=image)
 
 
