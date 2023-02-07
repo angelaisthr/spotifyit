@@ -17,7 +17,7 @@ SPOTIPY_CLIENT_ID = client_id = os.environ.get('client_id')
 SPOTIPY_CLIENT_SECRET = client_secret = os.environ.get('client_secret')
 SCOPE = "user-library-read playlist-read-private playlist-modify-public user-library-modify user-read-email user-read-private"
 SPOTIPY_REDIRECT_URI = "https://turnstrat.onrender.com/login"
-#SPOTIPY_REDIRECT_URI = "https://angelaisthr-crispy-barnacle-rqv566r9wrx3pp6q-5000.preview.app.github.dev/login"
+# SPOTIPY_REDIRECT_URI = "https://angelaisthr-crispy-barnacle-rqv566r9wrx3pp6q-5000.preview.app.github.dev/login"
 
 sp_oauth = oauth2.SpotifyOAuth( SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET,SPOTIPY_REDIRECT_URI,scope=SCOPE)
 
@@ -104,7 +104,7 @@ def convert():
             temp = {'url': "https://open.spotify.com/playlist/" + playlist['id'], 'name': playlist['name'], 'img': img}
             stuff.append(temp)
             print("Loading...")
-            results = spotify_object.current_user_saved_tracks()
+            results = spotify_object.current_user_saved_tracks(limit=50)
             show_tracks(results, playlist['id'])
     
             while results['next']:
